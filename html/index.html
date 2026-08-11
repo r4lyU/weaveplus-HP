@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weave+</title>
+    <style>
+        /* 基本スタイル */
+        :root {
+            --primary-color: #3FB7CA;
+            --text-color: #1f2937;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-light);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ヘッダー */
+        header {
+            background-color: var(--white);
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px;
+            display: block;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color));
+            color: var(--white);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* セクション共通 */
+        section {
+            padding: 80px 0;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 10px auto 0;
+        }
+
+        /* 団体紹介 */
+        .about {
+            background-color: var(--white);
+        }
+
+        .about p {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            text-align: left;
+            line-height: 1.8;
+        }
+
+        /* NEWS */
+        .news {
+            background-color: var(--bg-light);
+        }
+
+        .news-header {
+            display: block;
+        }
+
+        .news h2.news-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 0;
+        }
+
+        .news h2.news-title::after {
+            content: none;
+        }
+
+        .news-divider {
+            height: 3px;
+            background: var(--primary-color);
+            margin: 16px 0 40px;
+        }
+
+        .news-grid {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 14px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+        }
+
+        .news-grid::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .news-grid::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 999px;
+        }
+
+        .news-card {
+            display: block;
+            color: inherit;
+            flex: 0 0 240px;
+            scroll-snap-align: start;
+        }
+
+        .news-thumb {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #e2e8f0;
+            margin-bottom: 14px;
+        }
+
+        .news-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .news-card-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .news-card:hover .news-card-title {
+            color: var(--primary-color);
+        }
+
+        .news-date {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .news-desc {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .news-bottom-line {
+            height: 3px;
+            background: var(--primary-color);
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .news h2.news-title {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* 連携校 */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .link-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 140px;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-card img {
+            max-width: 100%;
+            height: auto;
+            max-height: 60px;
+        }
+
+        /* コンタクト */
+        .contact {
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 30px;
+            background: var(--primary-color);
+            color: var(--white);
+            font-weight: bold;
+        }
+
+        .btn-insta {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        /* フッター */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .logo img {
+                height: 40px;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-card {
+                flex-basis: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="image/logodata_「Weave+」.png" alt="Weave+ Logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">団体紹介</a></li>
+                    <li><a href="#news">NEWS</a></li>
+                    <li><a href="#links">連携校</a></li>
+                    <li><a href="#contact">お問い合わせ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>高大連携団体「Weave+」</h1>
+                <p>
+                    2024年12月に「みらいリンク」として活動を開始しました。その後、2025年7月には北海道科学大学の特別団体として承認され、2026年3月には今後のさらなる発展を目的に団体名称を「Weave＋」へと変更して活動を行っております。
+                </p>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2>Weave+ について</h2>
+                <p>
+                    Weave+（ウィーブ・プラス）は、北海道科学大学と北海道科学大学高等学校による高大連携を通じ、高校のDX（デジタルトランスフォーメーション）推進に貢献することを目的とした団体です。情報技術を駆使し、高校生が主体的に情報を発信・取得できる場の創造を目指しています。
+                </p>
+                <p>
+                    現在は、高校内に設置されたオリジナル・デジタルサイネージの開発から運用・保守を一貫して担っているほか、学校行事におけるICT支援や、大学が主催する各種イベントへの参加など、テクノロジーを通じた多角的な活動を展開しています。
+                </p>
+            </div>
+        </section>
+
+        <section id="news" class="news">
+            <div class="container">
+                <div class="news-header">
+                    <h2 class="news-title">NEWS</h2>
+                </div>
+                <div class="news-divider"></div>
+                <div class="news-grid">
+                    <a href="#" class="news-card">
+                        <div class="news-thumb">
+                            <img src="image/OC_2026_07_26.jpg" alt="オープンキャンパス">
+                        </div>
+                        <h3 class="news-card-title">2026年7月オープンキャンパス参加</h3>
+                        <p class="news-date">2026/07/26</p>
+                        <p class="news-desc">2026年7月26日（土）に北海道科学大学で行われたオープンキャンパスに参加しました。</p>
+                    </a>
+                    <a href="#" class="news-card">
+                        <div class="news-thumb">
+                            <img src="" alt="">
+                        </div>
+                        <h3 class="news-card-title">coming soon</h3>
+                        <p class="news-date"></p>
+                        <p class="news-desc"></p>
+                    </a>
+                    <a href="#" class="news-card">
+                        <div class="news-thumb">
+                            <img src="" alt="">
+                        </div>
+                        <h3 class="news-card-title">coming soon</h3>
+                        <p class="news-date"></p>
+                        <p class="news-desc"></p>
+                    </a>
+                    
+                </div>
+                <div class="news-bottom-line"></div>
+            </div>
+        </section>
+
+        <section id="links" class="links">
+            <div class="container">
+                <h2>連携校</h2>
+                <div class="links-grid">
+                    <a href="https://www.hus.ac.jp/" target="_blank" class="link-card">
+                        <img src="image/HUS_logo.svg" alt="北海道科学大学">
+                    </a>
+                    <a href="https://www.hus-h.ed.jp/" target="_blank" class="link-card">
+                        <img src="image/HUSHS_logo.svg" alt="北海道科学大学高等学校">
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>お問い合わせ</h2>
+                <p>活動への参加希望やご質問は、以下のリンクよりお気軽にご連絡ください。</p>
+                <div class="contact-links">
+                    <a href="mailto:hus2026weaveplus@gmail.com" class="btn">メールを送る</a>
+                    <a href="https://www.instagram.com/hus_weaveplus_off/" target="_blank"
+                        class="btn btn-insta">Instagram</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Weave+ All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
